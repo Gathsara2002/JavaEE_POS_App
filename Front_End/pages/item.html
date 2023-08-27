@@ -197,6 +197,36 @@
         });
     });
 
+    $("#btnUpdateItem").click(function () {
+
+        let code = $("#itemCode1").val();
+        let name = $("#itemName1").val();
+        let price = $("#price").val();
+        let qty = $("#qty").val();
+
+        let item = {
+            code: code,
+            name: name,
+            price: price,
+            qty: qty
+        }
+
+        $.ajax({
+            url: "item",
+            method: "put",
+            data: JSON.stringify(item),
+            contentType: "application/json",
+            success: function (resp) {
+                alert(resp.message);
+                loadAllItems();
+                clearInputFieldsItems();
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+    });
+
 </script>
 </body>
 </html>
