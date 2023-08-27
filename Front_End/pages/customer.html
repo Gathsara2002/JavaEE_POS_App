@@ -119,6 +119,9 @@
 <script src="../assets/js/jquery-3.7.0.min.js"></script>
 <script src="../assets/js/validation/customerValidation.js"></script>
 <script>
+
+    let baseUrl = "http://localhost:8080/javaee/";
+
     function bindEventToCustomer() {
         /*get customer detail from table*/
         $("#tblCustomer>tr").click(function () {
@@ -149,7 +152,7 @@
         /*get input values from frontend*/
         let formData = $("#customerForm").serialize();
         $.ajax({
-            url: "customer",
+            url: baseUrl + "customer",
             method: "post",
             data: formData,
             success: function (res) {
@@ -181,7 +184,7 @@
         }
 
         $.ajax({
-            url: "customer",
+            url: baseUrl + "customer",
             method: "put",
             data: JSON.stringify(customer),
             contentType: "application/json",
@@ -202,7 +205,7 @@
 
         let id = $("#customerId").val();
         $.ajax({
-            url: "customer?cusId=" + id,
+            url: baseUrl + "customer?cusId=" + id,
             method: "delete",
             success: function (res) {
                 alert(res.message);
@@ -224,7 +227,7 @@
     /*function to load all customers*/
     function loadAllCustomers() {
         $.ajax({
-            url: "customer",
+            url: baseUrl + "customer",
             success: function (resp) {
                 $("#tblCustomer").empty();
                 for (let cus of resp) {

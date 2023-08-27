@@ -7,21 +7,25 @@ package lk.ijse.spa.servlet;
 
 import javax.json.*;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
 
+@WebServlet(urlPatterns = "/customer")
 public class CustomerServletAPI extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Content-Type", "application/json");
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/webPos", "root", "1234");
             PreparedStatement pstm = connection.prepareStatement("select * from Customer");
             ResultSet resultSet = pstm.executeQuery();
-            resp.addHeader("Content-Type", "application/json");
+
             resp.addHeader("Access-Control-Allow-Origin", "*");
 
             JsonArrayBuilder allCustomers = Json.createArrayBuilder();
@@ -59,10 +63,10 @@ public class CustomerServletAPI extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/webPos", "root", "1234");
             PreparedStatement pstm = connection.prepareStatement("insert into Customer values(?,?,?,?)");
-            pstm.setObject(1, id);
-            pstm.setObject(2, name);
-            pstm.setObject(3, address);
-            pstm.setObject(4, tp);
+            pstm.setObject(1, id.trim());
+            pstm.setObject(2, name.trim());
+            pstm.setObject(3, address.trim());
+            pstm.setObject(4, tp.trim());
             boolean isAdded = pstm.executeUpdate() > 0;
 
             if (isAdded) {
