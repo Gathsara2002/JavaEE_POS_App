@@ -71,8 +71,8 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="nic">NIC</label>
-                                    <input class="form-control" id="nic">
+                                    <label>Customer ID :</label>
+                                    <input class="form-control" id="cId" type="text">
                                 </div>
                             </div>
                         </div>
@@ -102,15 +102,15 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-6">
-                            <label for="itemCode">Item Code</label>
-                            <select class="form-select" aria-label="Default select example" id="itemCode">
-                                <option selected>-Item Code-</option>
+                            <label for="itemName">Item Name</label>
+                            <select class="form-select" aria-label="Default select example" id="itemName">
+                                <option selected>-Item Name-</option>
                             </select>
                         </div>
                         <div class="col-6">
                             <form>
-                                <label for="itemName" class="form-label">Item Name</label>
-                                <input type="text" class="form-control" id="itemName">
+                                <label for="itemCode" class="form-label">Item Code</label>
+                                <input type="text" class="form-control" id="itemCode">
                             </form>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                             </form>
                         </div>
                         <div class="col-6 mt-auto">
-                            <button type="button" class="btn btn-danger">Add To Cart</button>
+                            <button id="btnCart" type="button" class="btn btn-danger">Add To Cart</button>
                         </div>
                     </div>
                 </div>
@@ -167,7 +167,7 @@
                         <div class="col-6">
                             <form>
                                 <label for="discount" class="form-label">Discount</label>
-                                <input type="number" class="form-control" id="discount">
+                                <input type="number" class="form-control" id="discount" min="0" value="0">
                             </form>
                         </div>
                         <div class="col-6">
@@ -180,12 +180,12 @@
                     <div class="row mb-3">
                         <div class="col-6">
                             <form>
-                                <label for="Balance" class="form-label">Balance</label>
-                                <input type="text" class="form-control" id="Balance">
+                                <label for="balance" class="form-label">Balance</label>
+                                <input type="text" class="form-control" id="balance">
                             </form>
                         </div>
                         <div class="col-6">
-                            <button type="button" class="btn btn-danger mt-4">Purchase</button>
+                            <button id="btnPurchase" type="button" class="btn btn-danger mt-4">Purchase</button>
                         </div>
                     </div>
                 </div>
@@ -215,6 +215,112 @@
     </section>
 
 </main>
+<script src="../assets/js/jquery-3.7.0.min.js"></script>
+<script>
 
+    let baseUrl = "http://localhost:8080/javaee/";
+
+    loadCustomerNames();
+    loadItemNames();
+
+    /*set customer name to combo box*/
+    function loadCustomerNames() {
+        $.ajax({
+            url: baseUrl + "customer",
+            success: function (resp) {
+                console.log(resp);
+                //clear combo box
+                $("#cusId").empty();
+
+                for (let cus of resp) {
+                    let name = cus.name;
+                    console.log(name);
+                    $("#cusId").append(`<option>${name}</option>`);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    /*set item name to combo box*/
+    function loadItemNames() {
+        $.ajax({
+            url: baseUrl + "item",
+            success: function (resp) {
+                console.log(resp);
+                //clear combo box
+                $("#itemName").empty();
+
+                for (let item of resp) {
+                    let name = item.name;
+                    console.log(name);
+                    $("#itemName").append(`<option>${name}</option>`);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    /*set customer detail when combo box click*/
+    $("#cusId").click(function () {
+
+        let name = $("#cusId").val();
+
+        $.ajax({
+            url: baseUrl + "customer",
+            success: function (resp) {
+                console.log(resp);
+                for (let i = 0; i < resp.length; i++) {
+                    if (name === resp[i].name) {
+                        let id = resp[i].id;
+                        let address = resp[i].address;
+                        let tel = resp[i].tp;
+
+                        //set values
+                        $("#cId").val(id);
+                        $("#cusName").val(name);
+                        $("#address").val(address);
+                        $("#cusContact").val(tel);
+                    }
+                }
+            },
+            function(error) {
+                console.log(error);
+            }
+        });
+    });
+
+    /*set item detail when combo box click*/
+    $("#itemName").click(function () {
+
+        let itemName = $("#itemName").val();
+
+        $.ajax({
+            url: baseUrl + "item",
+            success: function (resp) {
+                for (let i = 0; i < resp.length; i++) {
+                    if (itemName === resp[i].name) {
+                        let code = resp[i].code;
+                        let price = resp[i].price;
+                        let qty = resp[i].qty;
+
+                        //set values
+                        $("#itemCode").val(code);
+                        $("#itemName").val(itemName);
+                        $("#unitPrice").val(price);
+                        $("#qtyOnHand").val(qty);
+                    }
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
 </body>
 </html>
