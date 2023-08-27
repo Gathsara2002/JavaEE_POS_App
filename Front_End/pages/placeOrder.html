@@ -338,6 +338,7 @@
         saveOrderDetails();
         findTotal();
         $("#total").val(payTot);
+        count++;
     });
 
     let buyQty = 0;
@@ -477,14 +478,37 @@
          getAllItems();
      }*/
 
+    /*item count*/
+    let count = 0;
+
+    /*save order function*/
+    function saveOrder() {
+
+        let orderId = $("#orderId").val();
+        let date = $("#date").val();
+        let totBill = $("#total").val();
+
+        console.log(orderId, date, total);
+
+        $.ajax({
+            url: baseUrl + "order?orderId=" + orderId + "&orderDate=" + date + "&itemCount=" + count + "&total=" + totBill,
+            method: "post",
+            success: function (resp) {
+
+            }
+        });
+    }
+
+
     /*purchase function*/
     $("#btnPurchase").click(function () {
-        updateItemInPO();
-        clearFields();
+        /*updateItemInPO();*/
+        saveOrder();
         $("#orderTable").empty();
         //if placeOrder array not empty.every time previous order details automatically adds to order table
         placeOrderDB = [];
         alert("Order complete !");
+        clearFields();
     });
 
 </script>
