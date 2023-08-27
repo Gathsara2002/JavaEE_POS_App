@@ -103,14 +103,14 @@
                     <div class="row mb-3">
                         <div class="col-6">
                             <label for="itemName">Item Name</label>
-                            <select class="form-select" aria-label="Default select example" id="itemName">
+                            <select class="form-select" aria-label="Default select example" id="itemName" name="name">
                                 <option selected>-Item Name-</option>
                             </select>
                         </div>
                         <div class="col-6">
                             <form>
                                 <label for="itemCode" class="form-label">Item Code</label>
-                                <input type="text" class="form-control" id="itemCode">
+                                <input type="text" class="form-control" id="itemCode" name="code">
                             </form>
                         </div>
                     </div>
@@ -118,13 +118,13 @@
                         <div class="col-6">
                             <form>
                                 <label for="unitPrice" class="form-label">Unit Price</label>
-                                <input type="text" class="form-control" id="unitPrice">
+                                <input type="text" class="form-control" id="unitPrice" name="price">
                             </form>
                         </div>
                         <div class="col-6">
                             <form>
                                 <label for="qtyOnHand" class="form-label">Qty On</label>
-                                <input type="text" class="form-control" id="qtyOnHand">
+                                <input type="text" class="form-control" id="qtyOnHand" name="qty">
                             </form>
                         </div>
                     </div>
@@ -215,6 +215,7 @@
     </section>
 
 </main>
+<script src="../assets/js/bootstrap.js"></script>
 <script src="../assets/js/jquery-3.7.0.min.js"></script>
 <script>
 
@@ -488,8 +489,6 @@
         let date = $("#date").val();
         let totBill = $("#total").val();
 
-        console.log(orderId, date, total);
-
         $.ajax({
             url: baseUrl + "order?orderId=" + orderId + "&orderDate=" + date + "&itemCount=" + count + "&total=" + totBill,
             method: "post",
@@ -499,11 +498,43 @@
         });
     }
 
+    /*update items after purchased*/
+    function updateItems() {
+        let code = $("#itemCode").val();
+        let name = $("#itemName").val();
+        let price = $("#unitPrice").val();
+        let qty = $("#qtyOnHand").val();
+
+        let buyQty = $("#buyQrt").val();
+        let newQty = qty - buyQty;
+
+        let item = {
+            code: code,
+            name: name,
+            price: price,
+            qty: newQty
+        }
+
+        $.ajax({
+            url: baseUrl + "item",
+            method: "put",
+            data: JSON.stringify(item),
+            contentType: "application/json",
+            success: function (resp) {
+                alert(resp.message);
+                console.log("done")
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+                console.log("error");
+            }
+        });
+    }
 
     /*purchase function*/
     $("#btnPurchase").click(function () {
-        /*updateItemInPO();*/
         saveOrder();
+        //updateItems();
         $("#orderTable").empty();
         //if placeOrder array not empty.every time previous order details automatically adds to order table
         placeOrderDB = [];
