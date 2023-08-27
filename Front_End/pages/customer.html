@@ -110,7 +110,7 @@
             </tr>
             </thead>
 
-            <tbody></tbody>
+            <tbody id="tblCustomer"></tbody>
 
         </table>
     </section>
@@ -118,5 +118,133 @@
 </main>
 <script src="../assets/js/jquery-3.7.0.min.js"></script>
 <script src="../assets/js/validation/customerValidation.js"></script>
+<script>
+    function bindEventToCustomer() {
+        /*get customer detail from table*/
+        $("#tblCustomer>tr").click(function () {
+
+            console.log("clicked");
+            let col1 = $(this).children().eq(0).text();
+            let col2 = $(this).children().eq(1).text();
+            let col3 = $(this).children().eq(2).text();
+            let col4 = $(this).children().eq(3).text();
+
+            /*set values to input fields*/
+            $("#customerId").val(col1.trim());
+            $("#customerName").val(col2);
+            $("#addressCus").val(col3);
+            $("#tpNo").val(col4.trim());
+
+            console.log(col1, col2, col3, col4);
+
+        });
+    }
+
+    bindEventToCustomer();
+    loadAllCustomers();
+
+    /*add customer with ajax*/
+    $("#btnSaveCustomer").click(function () {
+
+        /*get input values from frontend*/
+        let formData = $("#customerForm").serialize();
+        $.ajax({
+            url: "customer",
+            method: "post",
+            data: formData,
+            success: function (res) {
+                alert(res.message);
+                console.log("customer saved successfully!");
+                loadAllCustomers();
+                clearInputFields();
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+    });
+
+    /*update customer with ajax*/
+    $("#btnUpdateCustomer").click(function () {
+
+        let id = $("#customerId").val();
+        let name = $("#customerName").val();
+        let address = $("#addressCus").val();
+        let tel = $("#tpNo").val();
+
+        /*customer js object*/
+        let customer = {
+            id: id,
+            name: name,
+            address: address,
+            contact: tel
+        }
+
+        $.ajax({
+            url: "customer",
+            method: "put",
+            data: JSON.stringify(customer),
+            contentType: "application/json",
+            success: function (res) {
+                alert(res.message);
+                console.log("customer updated successfully!");
+                loadAllCustomers();
+                clearInputFields();
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+    });
+
+    /*delete customer with ajax*/
+    $("#btnDeleteCustomer").click(function () {
+
+        let id = $("#customerId").val();
+        $.ajax({
+            url: "customer?cusId=" + id,
+            method: "delete",
+            success: function (res) {
+                alert(res.message);
+                console.log("customer deleted successfully!");
+                loadAllCustomers();
+                clearInputFields();
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+    });
+
+    /*get all*/
+    $("#btnGetAllCustomers").click(function () {
+        loadAllCustomers();
+    });
+
+    /*function to load all customers*/
+    function loadAllCustomers() {
+        $.ajax({
+            url: "customer",
+            success: function (resp) {
+                $("#tblCustomer").empty();
+                for (let cus of resp) {
+                    let row = `<tr>
+                    <td>${cus.id}</td>
+                    <td>${cus.name}</td>
+                    <td>${cus.address}</td>
+                    <td>${cus.tp}</td>
+                </tr>`;
+                    $("#tblCustomer").append(row);
+                    bindEventToCustomer();
+                }
+            }
+        });
+    }
+
+    /*clear input fields*/
+    function clearInputFields() {
+        $("#customerId,#customerName,#addressCus,#tpNo").val("");
+    }
+</script>
 </body>
 </html>
