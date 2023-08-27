@@ -180,6 +180,23 @@
         });
     });
 
+    $("#btnDeleteItem").click(function () {
+
+        let code = $("#itemCode1").val();
+        $.ajax({
+            url: "item?code=" + code,
+            method: "delete",
+            success: function (resp) {
+                alert(resp.message);
+                loadAllItems();
+                clearInputFieldsItems();
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+    });
+
 </script>
 </body>
 </html>
