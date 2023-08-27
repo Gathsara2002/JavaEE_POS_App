@@ -22,6 +22,7 @@ public class CustomerServletAPI extends HttpServlet {
             PreparedStatement pstm = connection.prepareStatement("select * from Customer");
             ResultSet resultSet = pstm.executeQuery();
             resp.addHeader("Content-Type", "application/json");
+            resp.addHeader("Access-Control-Allow-Origin", "*");
 
             JsonArrayBuilder allCustomers = Json.createArrayBuilder();
 
@@ -52,6 +53,7 @@ public class CustomerServletAPI extends HttpServlet {
         String name = req.getParameter("cusName");
         String address = req.getParameter("cusAddress");
         String tp = req.getParameter("cusTp");
+        resp.addHeader("Access-Control-Allow-Origin", "*");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -85,6 +87,7 @@ public class CustomerServletAPI extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("cusId");
+        resp.addHeader("Access-Control-Allow-Origin", "*");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -123,6 +126,7 @@ public class CustomerServletAPI extends HttpServlet {
         String name = customer.getString("name");
         String address = customer.getString("address");
         String tp = customer.getString("contact");
+        resp.addHeader("Access-Control-Allow-Origin", "*");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
