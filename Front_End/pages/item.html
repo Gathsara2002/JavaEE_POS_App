@@ -111,7 +111,7 @@
             </tr>
             </thead>
 
-            <tbody></tbody>
+            <tbody  id="tblItem"></tbody>
 
         </table>
     </section>
@@ -119,5 +119,25 @@
 </main>
 <script src="../assets/js/jquery-3.7.0.min.js"></script>
 <script src="../assets/js/validation/itemValidation.js"></script>
+<script>
+    function loadAllItems() {
+        $.ajax({
+            url: "item",
+            success: function (resp) {
+                $("#tblItem").empty();
+                for (let item of resp) {
+                    let row = `<tr>
+                    <td>${item.code}</td>
+                    <td>${item.name}</td>
+                    <td>${item.price}</td>
+                    <td>${item.qty}</td>
+                </tr>`;
+                    $("#tblItem").append(row);
+                    bindEventToItem();
+                }
+            }
+        });
+    }
+</script>
 </body>
 </html>
