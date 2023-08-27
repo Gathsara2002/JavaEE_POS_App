@@ -121,12 +121,14 @@
 <script src="../assets/js/validation/itemValidation.js"></script>
 <script>
 
+    let baseUrl = "http://localhost:8080/javaee/";
+
     bindEventToItem();
     loadAllItems();
 
     function loadAllItems() {
         $.ajax({
-            url: "item",
+            url: baseUrl + "item",
             success: function (resp) {
                 $("#tblItem").empty();
                 for (let item of resp) {
@@ -166,7 +168,7 @@
 
         let formData = $("#itemForm").serialize();
         $.ajax({
-            url: "item",
+            url: baseUrl + "item",
             method: "post",
             data: formData,
             success: function (resp) {
@@ -184,7 +186,7 @@
 
         let code = $("#itemCode1").val();
         $.ajax({
-            url: "item?code=" + code,
+            url: baseUrl + "item?code=" + code,
             method: "delete",
             success: function (resp) {
                 alert(resp.message);
@@ -212,7 +214,7 @@
         }
 
         $.ajax({
-            url: "item",
+            url: baseUrl + "item",
             method: "put",
             data: JSON.stringify(item),
             contentType: "application/json",

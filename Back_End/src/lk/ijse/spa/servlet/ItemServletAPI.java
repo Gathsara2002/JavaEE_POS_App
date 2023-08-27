@@ -19,13 +19,14 @@ public class ItemServletAPI extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Content-Type", "application/json");
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/webPos", "root", "1234");
             PreparedStatement pstm = connection.prepareStatement("select * from Item");
             ResultSet resultSet = pstm.executeQuery();
-
-            resp.addHeader("Content-Type", "application/json");
 
             JsonArrayBuilder allItems = Json.createArrayBuilder();
 
@@ -58,6 +59,7 @@ public class ItemServletAPI extends HttpServlet {
         String name = req.getParameter("itemName");
         String qty = req.getParameter("qty");
         String price = req.getParameter("price");
+        resp.addHeader("Access-Control-Allow-Origin", "*");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -92,6 +94,7 @@ public class ItemServletAPI extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String code = req.getParameter("code");
+        resp.addHeader("Access-Control-Allow-Origin", "*");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -130,6 +133,7 @@ public class ItemServletAPI extends HttpServlet {
         String name = item.getString("name");
         String qty = item.getString("qty");
         String price = item.getString("price");
+        resp.addHeader("Access-Control-Allow-Origin", "*");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -158,5 +162,13 @@ public class ItemServletAPI extends HttpServlet {
             resp.setStatus(500);
             resp.getWriter().print(builder.build());
         }
+    }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Methods", "DELETE");
+        resp.addHeader("Access-Control-Allow-Methods", "PUT");
+        resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
     }
 }
