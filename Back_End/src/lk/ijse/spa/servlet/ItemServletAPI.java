@@ -5,9 +5,7 @@
 
 package lk.ijse.spa.servlet;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -111,6 +109,46 @@ public class ItemServletAPI extends HttpServlet {
                 resp.getWriter().print(builder.build());
             }
             /*resp.sendRedirect("item");*/
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JsonObjectBuilder builder = Json.createObjectBuilder();
+            builder.add("state", "Error");
+            builder.add("message", e.getLocalizedMessage());
+            builder.add("data", "");
+            resp.setStatus(500);
+            resp.getWriter().print(builder.build());
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject item = reader.readObject();
+
+        String code = item.getString("code");
+        String name = item.getString("name");
+        String qty = item.getString("qty");
+        String price = item.getString("price");
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/webPos", "root", "1234");
+            PreparedStatement pstm = connection.prepareStatement("update  Item set name=?,price=?,qty=? where code=?");
+            pstm.setObject(1, name);
+            pstm.setObject(2, price);
+            pstm.setObject(3, qty);
+            pstm.setObject(4, code);
+
+            int i = pstm.executeUpdate();
+            if (i > 0) {
+                System.out.println("item updated");
+                JsonObjectBuilder builder = Json.createObjectBuilder();
+                builder.add("state", "ok");
+                builder.add("message", "Successfully updated !");
+                builder.add("data", "");
+                resp.getWriter().print(builder.build());
+            }
 
         } catch (ClassNotFoundException | SQLException e) {
             JsonObjectBuilder builder = Json.createObjectBuilder();
