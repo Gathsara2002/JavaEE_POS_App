@@ -111,7 +111,7 @@
             </tr>
             </thead>
 
-            <tbody  id="tblItem"></tbody>
+            <tbody id="tblItem"></tbody>
 
         </table>
     </section>
@@ -120,6 +120,10 @@
 <script src="../assets/js/jquery-3.7.0.min.js"></script>
 <script src="../assets/js/validation/itemValidation.js"></script>
 <script>
+
+    bindEventToItem();
+    loadAllItems();
+
     function loadAllItems() {
         $.ajax({
             url: "item",
@@ -138,6 +142,26 @@
             }
         });
     }
+
+    function bindEventToItem() {
+
+        $("#tblItem>tr").click(function () {
+
+            let col1 = $(this).children().eq(0).text();
+            let col2 = $(this).children().eq(1).text();
+            let col3 = $(this).children().eq(2).text();
+            let col4 = $(this).children().eq(3).text();
+
+            /*set values to input fields*/
+            $("#itemCode1").val(col1.trim());
+            $("#itemName1").val(col2.trim());
+            $("#price").val(col3.trim());
+            $("#qty").val(col4.trim());
+
+            console.log(col1, col2, col3, col4);
+        });
+    }
+
 </script>
 </body>
 </html>
