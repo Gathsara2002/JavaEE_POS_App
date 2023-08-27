@@ -162,6 +162,24 @@
         });
     }
 
+    $("#btnSaveItem").click(function () {
+
+        let formData = $("#itemForm").serialize();
+        $.ajax({
+            url: "item",
+            method: "post",
+            data: formData,
+            success: function (resp) {
+                alert(resp.message);
+                loadAllItems();
+                clearInputFieldsItems();
+            },
+            error: function (error) {
+                alert(JSON.parse(error.responseText).message);
+            }
+        });
+    });
+
 </script>
 </body>
 </html>
