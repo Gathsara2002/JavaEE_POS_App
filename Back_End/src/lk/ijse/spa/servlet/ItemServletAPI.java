@@ -89,4 +89,36 @@ public class ItemServletAPI extends HttpServlet {
             resp.getWriter().print(builder.build());
         }
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String code = req.getParameter("code");
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/webPos", "root", "1234");
+            PreparedStatement pstm = connection.prepareStatement("delete from Item where code=?");
+            pstm.setObject(1, code);
+
+            int i = pstm.executeUpdate();
+            if (i > 0) {
+                System.out.println("item deleted");
+                JsonObjectBuilder builder = Json.createObjectBuilder();
+                builder.add("state", "ok");
+                builder.add("message", "Successfully deleted !");
+                builder.add("data", "");
+                resp.getWriter().print(builder.build());
+            }
+            /*resp.sendRedirect("item");*/
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JsonObjectBuilder builder = Json.createObjectBuilder();
+            builder.add("state", "Error");
+            builder.add("message", e.getLocalizedMessage());
+            builder.add("data", "");
+            resp.setStatus(500);
+            resp.getWriter().print(builder.build());
+        }
+    }
 }
