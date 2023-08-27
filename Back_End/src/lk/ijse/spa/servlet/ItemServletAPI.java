@@ -53,4 +53,40 @@ public class ItemServletAPI extends HttpServlet {
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String code = req.getParameter("code");
+        String name = req.getParameter("itemName");
+        String qty = req.getParameter("qty");
+        String price = req.getParameter("price");
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/webPos", "root", "1234");
+            PreparedStatement pstm = connection.prepareStatement("insert into Item values (?,?,?,?)");
+            pstm.setObject(1, code);
+            pstm.setObject(2, name);
+            pstm.setObject(3, price);
+            pstm.setObject(4, qty);
+
+            int i = pstm.executeUpdate();
+            if (i > 0) {
+                System.out.println("item saved");
+                JsonObjectBuilder builder = Json.createObjectBuilder();
+                builder.add("state", "ok");
+                builder.add("message", "Successfully added !");
+                builder.add("data", "");
+                resp.getWriter().print(builder.build());
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JsonObjectBuilder builder = Json.createObjectBuilder();
+            builder.add("state", "Error");
+            builder.add("message", e.getLocalizedMessage());
+            builder.add("data", "");
+            resp.setStatus(500);
+            resp.getWriter().print(builder.build());
+        }
+    }
 }
