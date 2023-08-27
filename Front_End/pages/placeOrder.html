@@ -55,11 +55,11 @@
                         <div class="row mb-3">
                             <div class="col-6">
                                 <label>Order ID :</label>
-                                <input class="form-control" id="orderId" type="text">
+                                <input class="form-control" id="orderId" type="text" name="orderID">
                             </div>
                             <div class="col-6">
                                 <label>Date :</label>
-                                <input class="form-control" id="date" type="date">
+                                <input class="form-control" id="date" type="date" name="orderDate">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -153,7 +153,7 @@
                         <div class="col-6">
                             <form>
                                 <label for="total" class="form-label">Total</label>
-                                <input type="text" class="form-control" id="total">
+                                <input type="text" class="form-control" id="total" name="total">
                             </form>
                         </div>
                         <div class="col-6">
@@ -450,34 +450,32 @@
         $("#balance").val(balance);
     }
 
-   /* /!*update item qty method*!/
-    function updateItemInPO() {
-        let qtyOnHand = $("#qtyOnHand").val();
-        let buyQty = $("#buyQrt").val();
-        let code = $("#itemCode").val();
+    /* /!*update item qty method*!/
+     function updateItemInPO() {
+         let qtyOnHand = $("#qtyOnHand").val();
+         let buyQty = $("#buyQrt").val();
+         let code = $("#itemCode").val();
 
-        let val1 = parseInt(qtyOnHand);
-        let val2 = parseInt(buyQty);
+         let val1 = parseInt(qtyOnHand);
+         let val2 = parseInt(buyQty);
 
-        let newQty = val1 - val2;
+         let newQty = val1 - val2;
 
-        updateItemQty(code, newQty);
-    }
+         updateItemQty(code, newQty);
+     }
 
-    /!*update item function*!/
-    function updateItemQty(code, qty) {
-        let item1 = searchItem(code);
-        let itemName = $("#itemName").val();
-        let itemPrice = $("#unitPrice").val();
+     /!*update item function*!/
+     function updateItemQty(code, qty) {
+         let item1 = searchItem(code);
+         let itemName = $("#itemName").val();
+         let itemPrice = $("#unitPrice").val();
 
-        item1.itemName = itemName;
-        item1.itemPrice = itemPrice;
-        item1.itemQty = qty;
+         item1.itemName = itemName;
+         item1.itemPrice = itemPrice;
+         item1.itemQty = qty;
 
-        getAllItems();
-    }*/
-
-    /*save order function*/
+         getAllItems();
+     }*/
 
     /*purchase function*/
     $("#btnPurchase").click(function () {
