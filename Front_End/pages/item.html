@@ -52,22 +52,26 @@
 
             <h2 class="fw-bold text-start mb-3">Item Form</h2>
 
-            <form>
+            <form id="itemForm">
                 <div class="mb-3">
-                    <label for="itemCode" class="form-label">Item Code</label>
-                    <input type="text" class="form-control" id="itemCode">
+                    <label for="itemCode1" class="form-label">Item Code</label>
+                    <input type="text" class="form-control" id="itemCode1" name="code">
+                    <small class="control-error text-danger" id="lblItemCode"></small>
                 </div>
                 <div class="mb-3">
-                    <label for="itemName" class="form-label">Item Name</label>
-                    <input type="text" class="form-control" id="itemName">
+                    <label for="itemName1" class="form-label">Item Name</label>
+                    <input type="text" class="form-control" id="itemName1" name="itemName">
+                    <small class="control-error text-danger" id="lblItemName"></small>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Unit Price</label>
-                    <input type="text" class="form-control" id="price">
+                    <input type="text" class="form-control" id="price" name="price">
+                    <small class="control-error text-danger" id="lblItemPrice"></small>
                 </div>
                 <div class="mb-3">
                     <label for="qty" class="form-label">Qty On Hand</label>
-                    <input type="number" class="form-control" id="qty">
+                    <input type="number" class="form-control" id="qty" min="0" name="qty">
+                    <small class="control-error text-danger" id="lblItemQty"></small>
                 </div>
             </form>
 
@@ -101,6 +105,7 @@
     </section>
 
 </main>
-
+<script src="../assets/js/jquery-3.7.0.min.js"></script>
+<script src="../assets/js/validation/itemValidation.js"></script>
 </body>
 </html>
