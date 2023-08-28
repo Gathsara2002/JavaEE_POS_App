@@ -337,6 +337,7 @@
     /*set order detail to table*/
     $("#btnCart").click(function () {
         saveOrderDetails();
+        saveOrderDetail();
         findTotal();
         $("#total").val(payTot);
         count++;
@@ -452,48 +453,87 @@
         $("#balance").val(balance);
     }
 
-    /* /!*update item qty method*!/
-     function updateItemInPO() {
-         let qtyOnHand = $("#qtyOnHand").val();
-         let buyQty = $("#buyQrt").val();
-         let code = $("#itemCode").val();
-
-         let val1 = parseInt(qtyOnHand);
-         let val2 = parseInt(buyQty);
-
-         let newQty = val1 - val2;
-
-         updateItemQty(code, newQty);
-     }
-
-     /!*update item function*!/
-     function updateItemQty(code, qty) {
-         let item1 = searchItem(code);
-         let itemName = $("#itemName").val();
-         let itemPrice = $("#unitPrice").val();
-
-         item1.itemName = itemName;
-         item1.itemPrice = itemPrice;
-         item1.itemQty = qty;
-
-         getAllItems();
-     }*/
-
     /*item count*/
     let count = 0;
 
     /*save order function*/
-    function saveOrder() {
+    /*function saveOrder() {
+
+        /!* let orderId = $("#orderId").val();
+         let date = $("#date").val();
+         let totBill = $("#total").val();
+
+         let order = {
+             "oid": orderId,
+             "date": date,
+             "total": totBill,
+             "count": count,
+         }*!/
+
+
+        $.ajax({
+            url: baseUrl + "order",
+            method: "post",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(order),
+            success: function (resp) {
+
+            }
+        });
+    }
+*/
+
+    /*save order details function*/
+    function saveOrderDetail() {
+        let cid = $("#cId").val();
+        let oid = $("#orderId").val();
+        let code = $("#itemCode").val();
+        let name = $("#itemName").val();
+        let price = $("#unitPrice").val();
+        let qty = $("#buyQrt").val();
+
+        let orderDetail = [];
+
+        let detail = {
+            orderId: oid,
+            cusId: cid,
+            code: code,
+            itemName: name,
+            itemPrice: price,
+            qty: qty,
+        }
+        orderDetail.push(detail);
+        return orderDetail;
+    }
+
+    function savePlaceOrder() {
 
         let orderId = $("#orderId").val();
         let date = $("#date").val();
         let totBill = $("#total").val();
+        let array = saveOrderDetail();
+
+        let order = {
+            "oid": orderId,
+            "date": date,
+            "total": totBill,
+            "count": count,
+            "orderArray": array
+        }
+
 
         $.ajax({
-            url: baseUrl + "order?orderId=" + orderId + "&orderDate=" + date + "&itemCount=" + count + "&total=" + totBill,
+            url: baseUrl + "order",
             method: "post",
+            dataType: "json",
+            data: JSON.stringify(order),
+            contentType: "application/json",
             success: function (resp) {
-
+                console.log("done - po");
+            },
+            error: function (error) {
+                console.log("error - po");
             }
         });
     }
@@ -533,11 +573,12 @@
 
     /*purchase function*/
     $("#btnPurchase").click(function () {
-        saveOrder();
+        savePlaceOrder();
         //updateItems();
         $("#orderTable").empty();
         //if placeOrder array not empty.every time previous order details automatically adds to order table
         placeOrderDB = [];
+        /*orderDetail = [];*/
         alert("Order complete !");
         clearFields();
     });
