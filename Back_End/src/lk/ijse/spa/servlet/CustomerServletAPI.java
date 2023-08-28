@@ -27,6 +27,7 @@ public class CustomerServletAPI extends HttpServlet {
             ResultSet resultSet = pstm.executeQuery();
 
             resp.addHeader("Access-Control-Allow-Origin", "*");
+            resp.addHeader("Content-Type", "application/json");
 
             JsonArrayBuilder allCustomers = Json.createArrayBuilder();
 
@@ -58,6 +59,7 @@ public class CustomerServletAPI extends HttpServlet {
         String address = req.getParameter("cusAddress");
         String tp = req.getParameter("cusTp");
         resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Content-Type", "application/json");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -92,6 +94,7 @@ public class CustomerServletAPI extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("cusId");
         resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Content-Type", "application/json");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -131,6 +134,7 @@ public class CustomerServletAPI extends HttpServlet {
         String address = customer.getString("address");
         String tp = customer.getString("contact");
         resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Content-Type", "application/json");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
