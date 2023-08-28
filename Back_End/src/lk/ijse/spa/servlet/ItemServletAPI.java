@@ -60,6 +60,7 @@ public class ItemServletAPI extends HttpServlet {
         String qty = req.getParameter("qty");
         String price = req.getParameter("price");
         resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Content-Type", "application/json");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -95,6 +96,7 @@ public class ItemServletAPI extends HttpServlet {
 
         String code = req.getParameter("code");
         resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Content-Type", "application/json");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -134,6 +136,7 @@ public class ItemServletAPI extends HttpServlet {
         String qty = item.getString("qty");
         String price = item.getString("price");
         resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Content-Type", "application/json");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
