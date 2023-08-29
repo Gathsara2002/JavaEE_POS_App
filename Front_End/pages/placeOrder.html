@@ -456,33 +456,8 @@
     /*item count*/
     let count = 0;
 
-    /*save order function*/
-    /*function saveOrder() {
-
-        /!* let orderId = $("#orderId").val();
-         let date = $("#date").val();
-         let totBill = $("#total").val();
-
-         let order = {
-             "oid": orderId,
-             "date": date,
-             "total": totBill,
-             "count": count,
-         }*!/
-
-
-        $.ajax({
-            url: baseUrl + "order",
-            method: "post",
-            dataType: "json",
-            contentType: "application/json",
-            data: JSON.stringify(order),
-            success: function (resp) {
-
-            }
-        });
-    }
-*/
+    /*store order details*/
+    let orderDetail = [];
 
     /*save order details function*/
     function saveOrderDetail() {
@@ -492,8 +467,6 @@
         let name = $("#itemName").val();
         let price = $("#unitPrice").val();
         let qty = $("#buyQrt").val();
-
-        let orderDetail = [];
 
         let detail = {
             orderId: oid,
@@ -578,6 +551,7 @@
         $("#orderTable").empty();
         //if placeOrder array not empty.every time previous order details automatically adds to order table
         placeOrderDB = [];
+        orderDetail=[];
         /*orderDetail = [];*/
         alert("Order complete !");
         clearFields();
