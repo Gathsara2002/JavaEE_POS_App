@@ -495,7 +495,6 @@
             "orderArray": array
         }
 
-
         $.ajax({
             url: baseUrl + "order",
             method: "post",
@@ -551,8 +550,8 @@
         $("#orderTable").empty();
         //if placeOrder array not empty.every time previous order details automatically adds to order table
         placeOrderDB = [];
-        orderDetail=[];
-        /*orderDetail = [];*/
+        orderDetail = [];
+        count=0;
         alert("Order complete !");
         clearFields();
     });
