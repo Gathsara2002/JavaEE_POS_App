@@ -58,7 +58,7 @@ public class PlaceOrderServletAPI extends HttpServlet {
 
             } else {
                 /*for order details*/
-               // JsonObject detailArray = reader.readObject();
+                // JsonObject detailArray = reader.readObject();
                 JsonArray orderArray = order.getJsonArray("orderArray");
 
                 for (JsonValue value : orderArray) {
